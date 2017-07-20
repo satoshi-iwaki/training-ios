@@ -20,9 +20,10 @@ typedef NS_ENUM(NSUInteger, CalculatorOperation) {
 
 @interface Calculator : NSObject
 
-- (nullable NSDecimalNumber *)caluculateWithOperation:(CalculatorOperation)operation
-                                               value1:(NSNumber *)value1
-                                               value2:(NSNumber *)value2;
+- (BOOL)inputDigitByString:(NSString *)string;
+- (void)inputOperation:(CalculatorOperation)operation;
+- (NSDecimalNumber *)caluculate;
+- (NSString *)display;
 
 @end
 

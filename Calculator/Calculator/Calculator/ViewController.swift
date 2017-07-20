@@ -10,14 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var value1 = Decimal(0)
-    var value2 = Decimal(0)
-    var operation: CalculatorOperation = .none
-    
+//    var operation: CalculatorOperation = .none
+    let calculator = Calculator()
+    let formatter = NumberFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         displayLabel.text = "0"
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,15 +29,25 @@ class ViewController: UIViewController {
     @IBOutlet weak var displayLabel: UILabel!
     
     @IBAction func number0ButtonClicked(_ sender: Any) {
+        calculator.inputDigit(by: "0")
+        displayLabel.text = calculator.display();
     }
     @IBAction func number1ButtonClicked(_ sender: Any) {
+        calculator.inputDigit(by: "1")
+        displayLabel.text = calculator.display();
     }
     @IBAction func number2ButtonClicked(_ sender: Any) {
+        calculator.inputDigit(by: "2")
+        displayLabel.text = calculator.display();
     }
     
     @IBAction func operatorEqualButtonClicked(_ sender: Any) {
+        calculator.caluculate()
+        displayLabel.text = calculator.display();
     }
     @IBAction func operatorPlusButtonClicked(_ sender: Any) {
+        calculator.inputOperation(.adding)
+        displayLabel.text = calculator.display();
     }
 }
 
