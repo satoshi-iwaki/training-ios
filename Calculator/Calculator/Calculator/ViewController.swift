@@ -82,6 +82,10 @@ class ViewController: UIViewController, CalculatorDelegate {
     @IBAction func reverseSignButtonClicked(_ sender: Any) {
         calculator.reverseSign()
     }
+    @IBAction func percentButtonClicked(_ sender: Any) {
+        calculator.percent()
+    }
+    
 
     func calculator(_ calculator: Calculator, didChangeDisplay display: String) {
         displayLabel.text = display;

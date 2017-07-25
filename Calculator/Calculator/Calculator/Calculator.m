@@ -54,6 +54,15 @@
     [self didChangeDisplay];
 }
 
+- (void)percent {
+    if (_display.length > 0) {
+        NSDecimalNumber *value1 = [[NSDecimalNumber alloc] initWithString:_display];
+        NSDecimalNumber *value2 = [[NSDecimalNumber alloc] initWithString:@"100"];
+        [_display setString:[_fomatter stringFromNumber:[value1 decimalNumberByDividingBy:value2]]];
+        [self didChangeDisplay];
+    }
+}
+
 - (void)clear {
     _value1 = nil;
     _value2 = nil;
@@ -86,6 +95,7 @@
     _value1 = result;
     _value2 = nil;
     _operator = CalculatorOperatorNone;
+    _needsResetDisplay = YES;
     [_display setString:[_fomatter stringFromNumber:result]];
     [self didChangeDisplay];
     return result;

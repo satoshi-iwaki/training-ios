@@ -28,8 +28,10 @@ typedef NS_ENUM(NSUInteger, CalculatorOperator) {
 
 - (BOOL)inputDigitByString:(NSString *)string;
 - (void)inputOperator:(CalculatorOperator)operator;
-- (void)clear;
 - (void)reverseSign;
+- (void)percent;
+- (void)clear;
+
 - (NSDecimalNumber *)caluculate;
 
 @end
