@@ -10,21 +10,35 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, CalculatorOperation) {
-    CalculatorOperationNone = 0,
-    CalculatorOperationAdding,
-    CalculatorOperationSubtracting,
-    CalculatorOperationMultiplying,
-    CalculatorOperationDividing,
+typedef NS_ENUM(NSUInteger, CalculatorOperator) {
+    CalculatorOperatorNone = 0,
+    CalculatorOperatorAdding,
+    CalculatorOperatorSubtracting,
+    CalculatorOperatorMultiplying,
+    CalculatorOperatorDividing,
 };
+
+@protocol CalculatorDelegate;
 
 @interface Calculator : NSObject
 
+@property (nonatomic, weak) id<CalculatorDelegate> delegate;
+@property (nonatomic, readonly) CalculatorOperator operator;
+@property (nonatomic, copy, readonly) NSString *display;
+
 - (BOOL)inputDigitByString:(NSString *)string;
-- (void)inputOperation:(CalculatorOperation)operation;
+- (void)inputOperator:(CalculatorOperator)operator;
+- (void)clear;
+- (void)reverseSign;
 - (NSDecimalNumber *)caluculate;
-- (NSString *)display;
 
 @end
+
+@protocol CalculatorDelegate <NSObject>
+
+- (void)calculator:(Calculator *)calculator didChangeDisplay:(NSString *)display;
+
+@end
+
 
 NS_ASSUME_NONNULL_END

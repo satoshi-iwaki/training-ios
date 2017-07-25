@@ -12,8 +12,9 @@
     NSNumberFormatter *_fomatter;
     NSDecimalNumber *_value1;
     NSDecimalNumber *_value2;
-    CalculatorOperation _operation;
-    NSMutableString *_inputString;
+    CalculatorOperator _operator;
+    NSMutableString *_display;
+    BOOL _needsResetDisplay;
 }
 
 - (instancetype)init {
@@ -21,58 +22,83 @@
     if (self) {
         _fomatter = [[NSNumberFormatter alloc] init];
         _fomatter.numberStyle = NSNumberFormatterDecimalStyle;
-        _operation = CalculatorOperationNone;
-        _inputString = [[NSMutableString alloc] init];
+        _operator = CalculatorOperatorNone;
+        _display = [[NSMutableString alloc] init];
     }
     return self;
 }
 
 - (BOOL)inputDigitByString:(NSString *)string {
-    [_inputString appendString:string];
+    if (_needsResetDisplay) {
+        _display = [@"" mutableCopy];
+        _needsResetDisplay = NO;
+    }
+    [_display appendString:string];
+    [self didChangeDisplay];
     return YES;
 }
 
-- (void)inputDecimalNumber:(NSDecimalNumber *)decimalNumber {
-    if (_value1) {
-        _value2 = decimalNumber;
-    } else {
-        _value1 = decimalNumber;
-    }
+- (void)inputOperator:(CalculatorOperator)operator {
+    _operator = operator;
+    _value1 = [[NSDecimalNumber alloc] initWithString:_display];
+    _needsResetDisplay = YES;
+    [self didChangeDisplay];
 }
-- (void)inputOperation:(CalculatorOperation)operation {
-    _operation = operation;
-    [self inputDecimalNumber:[[NSDecimalNumber alloc] initWithString:_inputString]];
-    [_inputString setString:@""];
+
+- (void)reverseSign {
+    if ([_display hasPrefix:@"-"]) {
+        _display = [[_display stringByReplacingOccurrencesOfString:@"-" withString:@""] mutableCopy];
+    } else {
+        _display = [[@"-" stringByAppendingString:_display] mutableCopy];
+    }
+    [self didChangeDisplay];
+}
+
+- (void)clear {
+    _value1 = nil;
+    _value2 = nil;
+    _display = [@"" mutableCopy];
+    _operator = CalculatorOperatorNone;
+    [self didChangeDisplay];
 }
 
 - (NSDecimalNumber *)caluculate {
-    [self inputDecimalNumber:[[NSDecimalNumber alloc] initWithString:_inputString]];
+    _value2 = [[NSDecimalNumber alloc] initWithString:_display];
     NSDecimalNumber *result = NSDecimalNumber.notANumber;
     if (_value1 && _value2) {
-        switch (_operation) {
-            case CalculatorOperationAdding:
+        switch (_operator) {
+            case CalculatorOperatorAdding:
                 result = [_value1 decimalNumberByAdding:_value2];
                 break;
-            case CalculatorOperationSubtracting:
-                result = [_value1 decimalNumberByAdding:_value2];
+            case CalculatorOperatorSubtracting:
+                result = [_value1 decimalNumberBySubtracting:_value2];
                 break;
-            case CalculatorOperationMultiplying:
+            case CalculatorOperatorMultiplying:
                 result = [_value1 decimalNumberByMultiplyingBy:_value2];
                 break;
-            case CalculatorOperationDividing:
+            case CalculatorOperatorDividing:
                 result = [_value1 decimalNumberByDividingBy:_value2];
                 break;
             default:
                 break;
         }
     }
-    _value1 = _value2;
-    [_inputString setString:[_fomatter stringFromNumber:result]];
+    _value1 = result;
+    _value2 = nil;
+    _operator = CalculatorOperatorNone;
+    [_display setString:[_fomatter stringFromNumber:result]];
+    [self didChangeDisplay];
     return result;
 }
 
 - (NSString *)display {
-    return [_inputString copy];
+    return [_display copy];
+}
+
+- (void)didChangeDisplay {
+    if (self.delegate) {
+        [self.delegate calculator:self didChangeDisplay:self.display];
+    }
 }
 
 @end
