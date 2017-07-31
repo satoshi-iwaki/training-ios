@@ -11,11 +11,13 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, URLSessionDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    private let feedUrl = URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/10/explicit/json")
-    private let feeds = []
+    private let feeds: [RssFeed] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

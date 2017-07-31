@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FBC9D4B1F2F5B7E0066B6D6 /* RssReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */; };
 		4FD9FEEE1F28CF2D000B5B07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */; };
 		4FD9FEF01F28CF2D000B5B07 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FEEF1F28CF2D000B5B07 /* ViewController.swift */; };
 		4FD9FEF31F28CF2D000B5B07 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FD9FEF11F28CF2D000B5B07 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssReader.swift; sourceTree = "<group>"; };
 		4FD9FEEA1F28CF2D000B5B07 /* RssReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RssReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FD9FEEF1F28CF2D000B5B07 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				4FD9FEF61F28CF2D000B5B07 /* LaunchScreen.storyboard */,
 				4FD9FEF91F28CF2D000B5B07 /* Info.plist */,
 				4FD9FF1B1F28DBF9000B5B07 /* RssFeed.swift */,
+				4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */,
 			);
 			path = RssReader;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FD9FEF01F28CF2D000B5B07 /* ViewController.swift in Sources */,
+				4FBC9D4B1F2F5B7E0066B6D6 /* RssReader.swift in Sources */,
 				4FD9FEEE1F28CF2D000B5B07 /* AppDelegate.swift in Sources */,
 				4FD9FF1C1F28DBF9000B5B07 /* RssFeed.swift in Sources */,
 			);
