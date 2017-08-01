@@ -11,48 +11,58 @@ import UIKit
 
 
 protocol RssReaderDelegate : class {
-    func didLoad(rssReader: RssReader) -> Void
+    func didFinishLoading(rssReader: RssReader, rssFeed: RssFeed?, error: Error?) -> Void
 }
 
 class RssReader: NSObject, URLSessionDelegate {
     weak var delegate: RssReaderDelegate?
-    let feeds: [RssFeed] = []
+    var feed: RssFeed?
 
-    private let url: URL
-    private let session: URLSession
-    public init(url: URL) {
-        self.url = url;
-        self.session = URLSession(configuration: URLSessionConfiguration.default,
-                                 delegate: self, delegateQueue: nil)
+    private let _session: URLSession
+    override public init() {
+        _session = URLSession(configuration: URLSessionConfiguration.default,
+                              delegate: nil, delegateQueue: nil)
+        super.init()
     }
     
-    func load() {
-        session.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                return;
+    func load(url: URL) {
+        let task = _session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("error = \(error)");
+                self.delegate?.didFinishLoading(rssReader: self, rssFeed: nil, error: error)
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, let data = data else {
+                print("HTTP response is nil or data is nil")
+                return
+            }
+            guard httpResponse.statusCode == 200 else {
+                print("HTTP response code is not 200")
+                return
             }
             
-            guard let httpResponse: HTTPURLResponse = response as! HTTPURLResponse else {
+            do {
+                self.feed = try self.decode(data: data)
+                self.delegate?.didFinishLoading(rssReader: self, rssFeed: self.feed, error: nil)
+            } catch {
+                self.delegate?.didFinishLoading(rssReader: self, rssFeed: nil, error: error)
             }
-            switch
-            httpResponse.statusCode
-            guard let jsonData = data else {
-                
-            }
-            self.decode(data: jsonData)
         }
+        task.resume()
     }
     
-    private func decode(data: Data) -> RssFeed {
+    func decode(data: Data) throws -> RssFeed {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"   // "2017-07-28T00:00:00Z"
         let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(formatter)
         do {
-            let a = try decoder.decode(RssFeed.self, from: data)
-            print(a)
+            let rss = try decoder.decode(Rss.self, from: data)
+            print(rss)
+            return rss.feed
         } catch {
             print(error)
+            throw(error)
         }
     }
 }

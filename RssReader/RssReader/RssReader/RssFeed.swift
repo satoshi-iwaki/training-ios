@@ -12,16 +12,39 @@ struct RssFeedAuthor: Codable {
     let name: String
     let uri: URL
 }
-struct RssFeedLink: Codable {
-    //    let self: URL
-    let alternate: URL
+
+struct RssFeedResult: Codable {
+    let artistId: String
+    let artistName: String
+    let artistUrl: URL
+    let artworkUrl100: URL
+    let contentAdvisoryRating: String
+    let copyright: String
+    let genreNames: [String]
+    let id: String
+    let kind: String
+    let name: String
+    let primaryGenreName: String
+    let releaseDate: Date
+    let trackCensoredName: String
+    let trackExplicitness: String
+    let url: URL
+    let version: String
 }
+
 struct RssFeed: Codable {
     let title: String
     let id: String
     let author: RssFeedAuthor
-    let links: [RssFeedLink]
+    let links: [Dictionary<String, String>]
+    let copyright: String
+    let country: String
+    let icon: URL
+    let updated: String
+    let results: [RssFeedResult]
 }
-struct RssFeedItem: Codable {
-    
+
+struct Rss: Codable {
+    let feed: RssFeed
 }
+
