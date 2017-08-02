@@ -38,7 +38,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
-//        cell.imageView!.image
         
         guard let feed = feed else {
             return cell
@@ -56,6 +55,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         } catch {
             
         }
+        cell.imageView?.setImageURL(result.artworkUrl100)
         return cell
     }
 
@@ -67,6 +67,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         guard feed.results.count < indexPath.row else {
             return
         }
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
     //MARK: RssReaderDelegate
