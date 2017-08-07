@@ -21,9 +21,14 @@
 {
     self.image = [ImageCache defaultImage];
     
-    [[ImageCache sharedInstance] imageForURL:URL
-                                      target:self
-                                    selector:@selector(cachedImage:)];
+    [[ImageCache sharedInstance] getImageForURL:URL completionHandler:^(UIImage * _Nonnull image) {
+        self.image = image;
+        [self setNeedsLayout];
+        [self setNeedsDisplay];
+    }];
+//    [[ImageCache sharedInstance] imageForURL:URL
+//                                      target:self
+//                                    selector:@selector(cachedImage:)];
 }
 
 @end

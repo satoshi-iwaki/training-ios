@@ -48,3 +48,8 @@ struct Rss: Codable {
     let feed: RssFeed
 }
 
+struct RssSetting: Codable {
+    var rss: Rss
+    let url: URL
+}
+

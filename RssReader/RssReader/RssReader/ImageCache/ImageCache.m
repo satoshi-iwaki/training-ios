@@ -8,6 +8,12 @@
 #import "ImageCache.h"
 
 @implementation ImageCache
+{
+    NSCache *cache;
+    NSOperationQueue *operationQueue;
+    UIImage *defaultImage;
+    NSURLSession *session;
+}
 
 @synthesize defaultImage;
 
@@ -46,7 +52,9 @@ static id _sharedInstance = nil;
         cache = [[NSCache alloc] init];
         operationQueue = [[NSOperationQueue alloc] init];
         [operationQueue setMaxConcurrentOperationCount:1];
-        defaultImage = [[UIImage imageNamed:@"no_image.png"] stretchableImageWithLeftCapWidth:16 topCapHeight:16];
+        defaultImage = [[UIImage imageNamed:@"NoImage"] stretchableImageWithLeftCapWidth:16 topCapHeight:16];
+        session = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+
     }
     return self;
 }
@@ -56,6 +64,7 @@ static id _sharedInstance = nil;
  */
 - (void)dealloc
 {
+    [session invalidateAndCancel];
     cache = nil;
     [operationQueue cancelAllOperations];
     operationQueue = nil;
@@ -84,13 +93,72 @@ static id _sharedInstance = nil;
     return [cache objectForKey:URL];
 }
 
+- (void)getImageForURL:(NSURL *)URL completionHandler:(void (^)(UIImage *image))completionHandler
+{
+    if (URL == nil) {
+        return;
+    }
+    
+    __block UIImage *image = [cache objectForKey:URL];
+    
+    if (image) {
+        completionHandler(image);
+    } else {
+        NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+            image = [cache objectForKey:URL];
+            
+            if (image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(image);
+                });
+            } else {
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL
+                                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                                        timeoutInterval:60.0];
+                
+                // HTTP通信開始
+                NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                    if (error) {
+                        image = [self defaultImage];
+                    } else {
+                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                        NSInteger statusCode = [httpResponse statusCode];
+                        
+                        if (200 == statusCode) {
+                            if (data) {
+                                image = [UIImage imageWithData:data];
+                            } else {
+                                // データが空の場合
+                                image = defaultImage;
+                            }
+                        } else {
+                            // ステータスコードが正常(200)以外の場合
+                            image = defaultImage;
+                        }
+                    }
+                    
+                    if (image) {
+                        [cache setObject:image forKey:URL];
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completionHandler(image);
+                    });
+                }];
+                [task resume];
+            }
+        }];
+        [operationQueue addOperation:operation];
+    }
+}
+
 - (void)imageForURL:(NSURL *)URL target:(id)target selector:(SEL)aSelector
 {
     if (URL == nil) {
         return;
     }
     
-    UIImage *image = [cache objectForKey:URL];
+    __block UIImage *image = [cache objectForKey:URL];
     
     if (image) {
         if ([target respondsToSelector:aSelector]) {
@@ -99,7 +167,7 @@ static id _sharedInstance = nil;
         }
     } else {
         NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            UIImage *image = [cache objectForKey:URL];
+            image = [cache objectForKey:URL];
             
             if (image) {
                 [target performSelectorOnMainThread:aSelector
@@ -111,40 +179,37 @@ static id _sharedInstance = nil;
                                                                         timeoutInterval:60.0];
                 
                 // HTTP通信開始
-                NSURLResponse *response = nil;
-                NSError *error = nil;
-                NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                                     returningResponse:&response
-                                                                 error:&error];
-                
-                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                NSInteger statusCode = [httpResponse statusCode];
-                
-                if (error) {
-                    image = defaultImage;
-                } else {
-                    if (200 == statusCode) {
-                        if (data) {
-                            image = [UIImage imageWithData:data];
+                NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                    if (error) {
+                        image = [self defaultImage];
+                    } else {
+                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                        NSInteger statusCode = [httpResponse statusCode];
+                        
+                        if (200 == statusCode) {
+                            if (data) {
+                                image = [UIImage imageWithData:data];
+                            } else {
+                                // データが空の場合
+                                image = defaultImage;
+                            }
                         } else {
-                            // データが空の場合
+                            // ステータスコードが正常(200)以外の場合
                             image = defaultImage;
                         }
-                    } else {
-                        // ステータスコードが正常(200)以外の場合
-                        image = defaultImage;
                     }
-                }
-                
-                if (image) {
-                    [cache setObject:image forKey:URL];
-                }
-                
-                if ([target respondsToSelector:aSelector]) {
-                    [target performSelectorOnMainThread:aSelector
-                                             withObject:image
-                                          waitUntilDone:NO];
-                }
+                    
+                    if (image) {
+                        [cache setObject:image forKey:URL];
+                    }
+                    
+                    if ([target respondsToSelector:aSelector]) {
+                        [target performSelectorOnMainThread:aSelector
+                                                 withObject:image
+                                              waitUntilDone:NO];
+                    }
+                }];
+                [task resume];
             }
         }];
         [operationQueue addOperation:operation];

@@ -7,15 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F8EB8531F36C13A00F02C81 /* NoImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FF423761F32314400097714 /* NoImage.png */; };
+		4F8EB8571F374A3100F02C81 /* RssListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8EB8561F374A3100F02C81 /* RssListViewController.swift */; };
 		4FBC9D4B1F2F5B7E0066B6D6 /* RssReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */; };
 		4FD9FEEE1F28CF2D000B5B07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */; };
-		4FD9FEF01F28CF2D000B5B07 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FEEF1F28CF2D000B5B07 /* ViewController.swift */; };
+		4FD9FEF01F28CF2D000B5B07 /* RssViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FEEF1F28CF2D000B5B07 /* RssViewController.swift */; };
 		4FD9FEF31F28CF2D000B5B07 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FD9FEF11F28CF2D000B5B07 /* Main.storyboard */; };
 		4FD9FEF51F28CF2D000B5B07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FD9FEF41F28CF2D000B5B07 /* Assets.xcassets */; };
 		4FD9FEF81F28CF2D000B5B07 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FD9FEF61F28CF2D000B5B07 /* LaunchScreen.storyboard */; };
 		4FD9FF031F28CF2E000B5B07 /* RssReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF021F28CF2E000B5B07 /* RssReaderTests.swift */; };
 		4FD9FF0E1F28CF2E000B5B07 /* RssReaderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF0D1F28CF2E000B5B07 /* RssReaderUITests.swift */; };
-		4FD9FF1C1F28DBF9000B5B07 /* RssFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF1B1F28DBF9000B5B07 /* RssFeed.swift */; };
+		4FD9FF1C1F28DBF9000B5B07 /* Rss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF1B1F28DBF9000B5B07 /* Rss.swift */; };
 		4FF423741F32286800097714 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4236D1F32204900097714 /* ImageCache.m */; };
 		4FF423751F3228F800097714 /* UIImageView+ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4236F1F32204900097714 /* UIImageView+ImageCache.m */; };
 /* End PBXBuildFile section */
@@ -38,10 +40,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F8EB8561F374A3100F02C81 /* RssListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssListViewController.swift; sourceTree = "<group>"; };
 		4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssReader.swift; sourceTree = "<group>"; };
 		4FD9FEEA1F28CF2D000B5B07 /* RssReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RssReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4FD9FEEF1F28CF2D000B5B07 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4FD9FEEF1F28CF2D000B5B07 /* RssViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssViewController.swift; sourceTree = "<group>"; };
 		4FD9FEF21F28CF2D000B5B07 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4FD9FEF41F28CF2D000B5B07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FD9FEF71F28CF2D000B5B07 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,12 +55,13 @@
 		4FD9FF091F28CF2E000B5B07 /* RssReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RssReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD9FF0D1F28CF2E000B5B07 /* RssReaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssReaderUITests.swift; sourceTree = "<group>"; };
 		4FD9FF0F1F28CF2E000B5B07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4FD9FF1B1F28DBF9000B5B07 /* RssFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssFeed.swift; sourceTree = "<group>"; };
+		4FD9FF1B1F28DBF9000B5B07 /* Rss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rss.swift; sourceTree = "<group>"; };
 		4FF4236C1F32204900097714 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		4FF4236D1F32204900097714 /* ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		4FF4236E1F32204900097714 /* UIImageView+ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageCache.h"; sourceTree = "<group>"; };
 		4FF4236F1F32204900097714 /* UIImageView+ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageCache.m"; sourceTree = "<group>"; };
 		4FF423701F3220CF00097714 /* RssReader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RssReader-Bridging-Header.h"; sourceTree = "<group>"; };
+		4FF423761F32314400097714 /* NoImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoImage.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,14 +114,15 @@
 			children = (
 				4FF4236B1F32204900097714 /* ImageCache */,
 				4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */,
-				4FD9FEEF1F28CF2D000B5B07 /* ViewController.swift */,
+				4FD9FEEF1F28CF2D000B5B07 /* RssViewController.swift */,
+				4F8EB8561F374A3100F02C81 /* RssListViewController.swift */,
+				4FD9FF1B1F28DBF9000B5B07 /* Rss.swift */,
+				4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */,
+				4FF423701F3220CF00097714 /* RssReader-Bridging-Header.h */,
 				4FD9FEF11F28CF2D000B5B07 /* Main.storyboard */,
 				4FD9FEF41F28CF2D000B5B07 /* Assets.xcassets */,
 				4FD9FEF61F28CF2D000B5B07 /* LaunchScreen.storyboard */,
 				4FD9FEF91F28CF2D000B5B07 /* Info.plist */,
-				4FD9FF1B1F28DBF9000B5B07 /* RssFeed.swift */,
-				4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */,
-				4FF423701F3220CF00097714 /* RssReader-Bridging-Header.h */,
 			);
 			path = RssReader;
 			sourceTree = "<group>";
@@ -143,6 +148,7 @@
 		4FF4236B1F32204900097714 /* ImageCache */ = {
 			isa = PBXGroup;
 			children = (
+				4FF423761F32314400097714 /* NoImage.png */,
 				4FF4236C1F32204900097714 /* ImageCache.h */,
 				4FF4236D1F32204900097714 /* ImageCache.m */,
 				4FF4236E1F32204900097714 /* UIImageView+ImageCache.h */,
@@ -256,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F8EB8531F36C13A00F02C81 /* NoImage.png in Resources */,
 				4FD9FEF81F28CF2D000B5B07 /* LaunchScreen.storyboard in Resources */,
 				4FD9FEF51F28CF2D000B5B07 /* Assets.xcassets in Resources */,
 				4FD9FEF31F28CF2D000B5B07 /* Main.storyboard in Resources */,
@@ -284,11 +291,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF423751F3228F800097714 /* UIImageView+ImageCache.m in Sources */,
-				4FD9FEF01F28CF2D000B5B07 /* ViewController.swift in Sources */,
+				4FD9FEF01F28CF2D000B5B07 /* RssViewController.swift in Sources */,
 				4FBC9D4B1F2F5B7E0066B6D6 /* RssReader.swift in Sources */,
 				4FD9FEEE1F28CF2D000B5B07 /* AppDelegate.swift in Sources */,
 				4FF423741F32286800097714 /* ImageCache.m in Sources */,
-				4FD9FF1C1F28DBF9000B5B07 /* RssFeed.swift in Sources */,
+				4FD9FF1C1F28DBF9000B5B07 /* Rss.swift in Sources */,
+				4F8EB8571F374A3100F02C81 /* RssListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

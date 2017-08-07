@@ -9,22 +9,28 @@
 
 #import "UIImageView+ImageCache.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*!
  *@brief	ImageCacheクラス
  *@note		画像のダウンロードとキャッシュを行う
  */
 @interface ImageCache : NSObject <NSURLConnectionDelegate>
-{
-@private
-    //! キャッシュ
-    NSCache *cache;
-    //! ダウンロードOperation用キュー
-    NSOperationQueue *operationQueue;
-    //! デフォルトの画像
-    UIImage *defaultImage;
-}
 
 @property (nonatomic,strong,readonly) UIImage *defaultImage;
+
+/*!
+ *@brief        シングルトンのインスタンス取得処理
+ *@note         シングルトンのインスタンス取得を行う
+ *@return       シングルトンのインスタンス
+ */
++ (instancetype)sharedInstance;
+
+/*!
+ *@brief        シングルトンのインスタンス削除処理
+ *@note         シングルトンのインスタンス削除を行う
+ */
++ (void)deleteInstance;
 
 /*!
  *@brief		キューのクリア取得処理
@@ -39,18 +45,11 @@
 - (void)clearCache;
 
 /*!
- *@brief		シングルトンのインスタンス取得処理
- *@note			シングルトンのインスタンス取得を行う
+ *@brief        シングルトンのインスタンス取得処理
+ *@note            シングルトンのインスタンス取得を行う
  *@return       シングルトンのインスタンス
  */
-+ (instancetype)sharedInstance;
-
-/*!
- *@brief		シングルトンのインスタンス削除処理
- *@note			シングルトンのインスタンス削除を行う
- */
-+ (void)deleteInstance;
-
+- (nullable UIImage *)cachedImageForURL:(NSURL *)URL;
 
 /*!
  *@brief		画像のダウンロードとキャッシュ処理
@@ -61,6 +60,8 @@
  */
 - (void)imageForURL:(NSURL *)URL target:(id)target selector:(SEL)aSelector;
 
+- (void)getImageForURL:(NSURL *)URL completionHandler:(void (^)(UIImage *image))completionHandler;
+
 /*!
  *@brief		デフォルトの画像取得処理
  *@note			デフォルトの画像取得を行う
@@ -69,3 +70,5 @@
 + (UIImage *)defaultImage;
 
 @end
+
+NS_ASSUME_NONNULL_END

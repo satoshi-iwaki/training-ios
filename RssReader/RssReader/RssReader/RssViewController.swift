@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RssViewController.swift
 //  RssReader
 //
 //  Created by Iwaki Satoshi on 2017/07/26.
@@ -8,17 +8,23 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RssReaderDelegate {
+class RssViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RssReaderDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    var url: URL?
+    
     private let reader: RssReader = RssReader()
-    private var feed: RssFeed?
+    private var rss: Rss?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         reader.delegate = self
-        let url = URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/10/explicit/json")!
+        
+        guard let url = url else {
+            return
+        }
+//        url = URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")!
         reader.load(url: url)
     }
 
@@ -30,42 +36,50 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //MARK: UITableViewDataSource
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let feed = feed else {
-            return 0
+        guard let rss = rss else {
+            return 1
         }
-        return feed.results.count;
+        return rss.feed.results.count;
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
         
-        guard let feed = feed else {
+        guard let rss = rss else {
+            cell.textLabel?.text = "Loading..."
+            cell.detailTextLabel?.text = ""
             return cell
         }
-        guard indexPath.row < feed.results.count else {
+        guard indexPath.row < rss.feed.results.count else {
             return cell
         }
-        let result = feed.results[indexPath.row];
+        let result = rss.feed.results[indexPath.row];
         cell.textLabel?.text = result.name
         cell.detailTextLabel?.text = result.artistName
         
-        do {
-            let data = try Data(contentsOf: result.artworkUrl100, options: [])
-            cell.imageView?.image = UIImage(data: data)
-        } catch {
-            
+        if let image = ImageCache.sharedInstance().cachedImage(for: result.artworkUrl100) {
+            cell.imageView?.image = image
+        } else {
+            cell.imageView?.image = UIImage(named: "NoImage.png")
+            ImageCache.sharedInstance().getImageFor(result.artworkUrl100) { (image) in
+                tableView.reloadData()
+            }
         }
-        cell.imageView?.setImageURL(result.artworkUrl100)
         return cell
     }
 
     //MARK: UITableViewDelegate
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let feed = feed else {
+        guard let rss = rss else {
             return
         }
-        guard feed.results.count < indexPath.row else {
+        guard indexPath.row < rss.feed.results.count else {
             return
+        }
+        
+        let result = rss.feed.results[indexPath.row]
+        if UIApplication.shared.canOpenURL(result.url) {
+            UIApplication.shared.open(result.url, options: [:], completionHandler: nil)
         }
     }
     
@@ -74,9 +88,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: RssReaderDelegate
-    func didFinishLoading(rssReader: RssReader, rssFeed: RssFeed?, error: Error?) -> Void {
-        feed = rssFeed
+    func didFinishLoading(rssReader: RssReader, rss: Rss?, error: Error?) -> Void {
+        self.rss = rss
         DispatchQueue.main.sync {
+            if let rss = self.rss {
+                self.title = rss.feed.title
+            }
             tableView.reloadData()
         }
     }

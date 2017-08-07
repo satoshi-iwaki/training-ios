@@ -28,7 +28,8 @@ class RssReaderTests: XCTestCase {
                 "title":"New Releases",
                 "id":"https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/10/explicit/json",
                 "author":{
-                    "name":"iTunes Store","uri":"http://wwww.apple.com/us/itunes/"
+                    "name":"iTunes Store",
+                    "uri":"http://wwww.apple.com/us/itunes/"
                 },
                 "links":[
                     {"self":"https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/10/explicit/json"},
@@ -84,6 +85,21 @@ class RssReaderTests: XCTestCase {
             }
         }
         """.data(using: .utf8)!
+        
+        let url = URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/10/explicit/json")!
+        let rssReader = RssReader()
+        
+        do {
+            let json2 = try Data(contentsOf: url, options: [])
+            let rssFeed = try rssReader.decode(data: json2)
+            
+            XCTAssertNotNil(rssFeed)
+            
+            
+        } catch {
+            XCTFail()
+        }
+        
     }
     
     
