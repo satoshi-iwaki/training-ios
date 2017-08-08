@@ -48,7 +48,7 @@ struct Rss: Codable {
     let feed: RssFeed
 }
 
-struct RssBookmark: Codable {
+struct Bookmark: Codable {
     let title: String
     let url: URL
     var rss: Rss?

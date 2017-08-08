@@ -1,5 +1,5 @@
 //
-//  RssListViewController.swift
+//  BookmarkViewController.swift
 //  RssReader
 //
 //  Created by Iwaki Satoshi on 2017/08/06.
@@ -8,8 +8,8 @@
 
 import UIKit
  
-class RssListViewController: UITableViewController {
-    var bookmarks: [RssBookmark] = []
+class BookmarkViewController: UITableViewController {
+    var bookmarks: [Bookmark] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +22,11 @@ class RssListViewController: UITableViewController {
         self.title = "RSS Bookmarks"
         
         if bookmarks.count == 0 {
-            bookmarks.append(RssBookmark(title: "Apple Music - Top Albums 100",
+            bookmarks.append(Bookmark(title: "Apple Music - Top Albums 100",
                                          url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")!))
-            bookmarks.append(RssBookmark(title: "iTunes Music - Top Albums 100",
+            bookmarks.append(Bookmark(title: "iTunes Music - Top Albums 100",
                                          url: URL(string: "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/100/explicit/json")!))
-            bookmarks.append(RssBookmark(title: "iOS App - New Apps We Love Top 100",
+            bookmarks.append(Bookmark(title: "iOS App - New Apps We Love Top 100",
                                          url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/100/explicit/json")!))
         }
     }
