@@ -48,6 +48,7 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
         guard let rss = rss else {
             cell.textLabel?.text = "Loading..."
             cell.detailTextLabel?.text = ""
+            cell.accessoryType = .none
             return cell
         }
         guard indexPath.row < rss.feed.results.count else {
@@ -56,7 +57,6 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let result = rss.feed.results[indexPath.row];
         cell.textLabel?.text = result.name
         cell.detailTextLabel?.text = result.artistName
-        
         if let image = ImageCache.sharedInstance().cachedImage(for: result.artworkUrl100) {
             cell.imageView?.image = image
         } else {
@@ -65,6 +65,7 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 tableView.reloadData()
             }
         }
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
 

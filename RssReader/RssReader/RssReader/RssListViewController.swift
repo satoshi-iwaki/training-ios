@@ -9,7 +9,7 @@
 import UIKit
  
 class RssListViewController: UITableViewController {
-    var rssList: [String] = ["https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json"]
+    var bookmarks: [RssBookmark] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,9 +18,17 @@ class RssListViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.title = "RSS Bookmarks"
         
-        self.title = "RSS"
+        if bookmarks.count == 0 {
+            bookmarks.append(RssBookmark(title: "Apple Music - Top Albums 100",
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")!))
+            bookmarks.append(RssBookmark(title: "iTunes Music - Top Albums 100",
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/100/explicit/json")!))
+            bookmarks.append(RssBookmark(title: "iOS App - New Apps We Love Top 100",
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/100/explicit/json")!))
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,7 +43,7 @@ class RssListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rssList.count
+        return bookmarks.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -43,12 +51,13 @@ class RssListViewController: UITableViewController {
 
         // Configure the cell...
         
-        guard indexPath.row < rssList.count else {
+        guard indexPath.row < bookmarks.count else {
             return cell
         }
-        let rss = rssList[indexPath.row]
+        let bookmark = bookmarks[indexPath.row]
         
-        cell.textLabel?.text = rss
+        cell.textLabel?.text = bookmark.title
+        cell.accessoryType = .disclosureIndicator
 
         return cell
     }
@@ -61,32 +70,27 @@ class RssListViewController: UITableViewController {
     }
     */
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            bookmarks.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
 
-    /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        bookmarks.swapAt(fromIndexPath.row, to.row)
     }
-    */
 
-    /*
     // Override to support conditional rearranging of the table view.
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
     }
-    */
 
     /*
     // MARK: - Navigation
@@ -98,19 +102,21 @@ class RssListViewController: UITableViewController {
     }
     */
 
-    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.row < rssList.count else {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row < bookmarks.count else {
             return
         }
-//        let rss = rssList[indexPath.row]
-        
         self.performSegue(withIdentifier: "showRssViewController", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showRssViewController" {
+            guard let indexPath = self.tableView.indexPathForSelectedRow else {
+                return;
+            }
+            let bookmark = self.bookmarks[indexPath.row]
             let rssViewController = segue.destination as! RssViewController
-            rssViewController.url = URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")
+            rssViewController.url = bookmark.url
         }
     }
 
