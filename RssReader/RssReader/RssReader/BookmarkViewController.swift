@@ -18,17 +18,21 @@ class BookmarkViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let addButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: Selector(("tappedAddButtonItem:")))
+        self.navigationItem.rightBarButtonItem = addButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.title = "RSS Bookmarks"
         
-        if bookmarks.count == 0 {
-            bookmarks.append(Bookmark(title: "Apple Music - Top Albums 100",
+        restoreBookmarks()
+        if self.bookmarks.count == 0 {
+            self.bookmarks.append(Bookmark(title: "Apple Music - Top Albums 100",
                                          url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")!))
-            bookmarks.append(Bookmark(title: "iTunes Music - Top Albums 100",
+            self.bookmarks.append(Bookmark(title: "iTunes Music - Top Albums 100",
                                          url: URL(string: "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/100/explicit/json")!))
-            bookmarks.append(Bookmark(title: "iOS App - New Apps We Love Top 100",
+            self.bookmarks.append(Bookmark(title: "iOS App - New Apps We Love Top 100",
                                          url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/100/explicit/json")!))
         }
+        storeBookmarks()
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,7 +54,6 @@ class BookmarkViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
 
         // Configure the cell...
-        
         guard indexPath.row < bookmarks.count else {
             return cell
         }
@@ -75,6 +78,7 @@ class BookmarkViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             bookmarks.remove(at: indexPath.row)
+            storeBookmarks()
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -92,24 +96,12 @@ class BookmarkViewController: UITableViewController {
         return true
     }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
-    */
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.row < bookmarks.count else {
-            return
-        }
-        self.performSegue(withIdentifier: "showRssViewController", sender: self)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showRssViewController" {
             guard let indexPath = self.tableView.indexPathForSelectedRow else {
                 return;
@@ -118,6 +110,35 @@ class BookmarkViewController: UITableViewController {
             let rssViewController = segue.destination as! RssViewController
             rssViewController.url = bookmark.url
         }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row < bookmarks.count else {
+            return
+        }
+        self.performSegue(withIdentifier: "showRssViewController", sender: self)
+    }
+    
+    func tappedAddButtonItem(sender: UIBarButtonItem) {
+        
+    }
+    
+    func storeBookmarks() {
+        guard let data = try? JSONEncoder().encode(self.bookmarks) else {
+            return
+        }
+        UserDefaults.standard.set(data, forKey: "Bookmarks")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func restoreBookmarks() {
+        guard let data = UserDefaults.standard.object(forKey: "Bookmarks") as? Data else {
+            return
+        }
+        guard let bookmarks = try? JSONDecoder().decode([Bookmark].self, from: data) else {
+            return
+        }
+        self.bookmarks = bookmarks
     }
 
 }
