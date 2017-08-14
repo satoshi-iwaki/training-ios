@@ -15,6 +15,11 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     private let reader: RssReader = RssReader()
     private var rss: Rss?
+    
+    deinit {
+        reader.invalidateAndCancel()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -24,7 +29,6 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
         guard let url = url else {
             return
         }
-//        url = URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")!
         reader.load(url: url)
     }
 
@@ -32,7 +36,6 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
     
     //MARK: UITableViewDataSource
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,11 +60,11 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let result = rss.feed.results[indexPath.row];
         cell.textLabel?.text = result.name
         cell.detailTextLabel?.text = result.artistName
-        if let image = ImageCache.sharedInstance().cachedImage(for: result.artworkUrl100) {
+        if let image = ImageCache.sharedInstance.cachedImage(url: result.artworkUrl100) {
             cell.imageView?.image = image
         } else {
             cell.imageView?.image = UIImage(named: "NoImage.png")
-            ImageCache.sharedInstance().getImageFor(result.artworkUrl100) { (image) in
+            ImageCache.sharedInstance.getImage(url: result.artworkUrl100) { (image) in
                 tableView.reloadData()
             }
         }
@@ -90,12 +93,29 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     //MARK: RssReaderDelegate
     func didFinishLoading(rssReader: RssReader, rss: Rss?, error: Error?) -> Void {
+        guard let rss = rss else {
+            self.showAlert(error: error)
+            return
+        }
         self.rss = rss
         DispatchQueue.main.sync {
             if let rss = self.rss {
                 self.title = rss.feed.title
             }
             tableView.reloadData()
+        }
+    }
+    
+    // MARK: - Private methods
+    func showAlert(error: Error?) {
+        DispatchQueue.main.sync {
+            let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: {
+                (action: UIAlertAction) in
+                self.dismiss(animated: true, completion: nil)
+            })
+            alertController.addAction(action)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
 }

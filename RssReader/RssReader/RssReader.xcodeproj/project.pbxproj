@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F8EB8531F36C13A00F02C81 /* NoImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FF423761F32314400097714 /* NoImage.png */; };
+		4F1405B21F3DF1E500BA6AEC /* AddBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1405B11F3DF1E500BA6AEC /* AddBookmarkViewController.swift */; };
+		4F17A7771F40DA8D000CE404 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF423691F30D6CA00097714 /* ImageCache.swift */; };
 		4F8EB8571F374A3100F02C81 /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8EB8561F374A3100F02C81 /* BookmarkViewController.swift */; };
 		4FBC9D4B1F2F5B7E0066B6D6 /* RssReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */; };
 		4FD9FEEE1F28CF2D000B5B07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */; };
@@ -18,8 +19,6 @@
 		4FD9FF031F28CF2E000B5B07 /* RssReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF021F28CF2E000B5B07 /* RssReaderTests.swift */; };
 		4FD9FF0E1F28CF2E000B5B07 /* RssReaderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF0D1F28CF2E000B5B07 /* RssReaderUITests.swift */; };
 		4FD9FF1C1F28DBF9000B5B07 /* Rss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9FF1B1F28DBF9000B5B07 /* Rss.swift */; };
-		4FF423741F32286800097714 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4236D1F32204900097714 /* ImageCache.m */; };
-		4FF423751F3228F800097714 /* UIImageView+ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4236F1F32204900097714 /* UIImageView+ImageCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F1405B11F3DF1E500BA6AEC /* AddBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookmarkViewController.swift; sourceTree = "<group>"; };
 		4F8EB8561F374A3100F02C81 /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssReader.swift; sourceTree = "<group>"; };
 		4FD9FEEA1F28CF2D000B5B07 /* RssReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RssReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,12 +56,7 @@
 		4FD9FF0D1F28CF2E000B5B07 /* RssReaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssReaderUITests.swift; sourceTree = "<group>"; };
 		4FD9FF0F1F28CF2E000B5B07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FD9FF1B1F28DBF9000B5B07 /* Rss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rss.swift; sourceTree = "<group>"; };
-		4FF4236C1F32204900097714 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
-		4FF4236D1F32204900097714 /* ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
-		4FF4236E1F32204900097714 /* UIImageView+ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageCache.h"; sourceTree = "<group>"; };
-		4FF4236F1F32204900097714 /* UIImageView+ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageCache.m"; sourceTree = "<group>"; };
-		4FF423701F3220CF00097714 /* RssReader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RssReader-Bridging-Header.h"; sourceTree = "<group>"; };
-		4FF423761F32314400097714 /* NoImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoImage.png; sourceTree = "<group>"; };
+		4FF423691F30D6CA00097714 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,13 +107,13 @@
 		4FD9FEEC1F28CF2D000B5B07 /* RssReader */ = {
 			isa = PBXGroup;
 			children = (
-				4FF4236B1F32204900097714 /* ImageCache */,
 				4FD9FEED1F28CF2D000B5B07 /* AppDelegate.swift */,
 				4F8EB8561F374A3100F02C81 /* BookmarkViewController.swift */,
+				4F1405B11F3DF1E500BA6AEC /* AddBookmarkViewController.swift */,
+				4FF423691F30D6CA00097714 /* ImageCache.swift */,
 				4FD9FEEF1F28CF2D000B5B07 /* RssViewController.swift */,
 				4FD9FF1B1F28DBF9000B5B07 /* Rss.swift */,
 				4FBC9D4A1F2F5B7E0066B6D6 /* RssReader.swift */,
-				4FF423701F3220CF00097714 /* RssReader-Bridging-Header.h */,
 				4FD9FEF11F28CF2D000B5B07 /* Main.storyboard */,
 				4FD9FEF41F28CF2D000B5B07 /* Assets.xcassets */,
 				4FD9FEF61F28CF2D000B5B07 /* LaunchScreen.storyboard */,
@@ -143,18 +138,6 @@
 				4FD9FF0F1F28CF2E000B5B07 /* Info.plist */,
 			);
 			path = RssReaderUITests;
-			sourceTree = "<group>";
-		};
-		4FF4236B1F32204900097714 /* ImageCache */ = {
-			isa = PBXGroup;
-			children = (
-				4FF423761F32314400097714 /* NoImage.png */,
-				4FF4236C1F32204900097714 /* ImageCache.h */,
-				4FF4236D1F32204900097714 /* ImageCache.m */,
-				4FF4236E1F32204900097714 /* UIImageView+ImageCache.h */,
-				4FF4236F1F32204900097714 /* UIImageView+ImageCache.m */,
-			);
-			path = ImageCache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,7 +245,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F8EB8531F36C13A00F02C81 /* NoImage.png in Resources */,
 				4FD9FEF81F28CF2D000B5B07 /* LaunchScreen.storyboard in Resources */,
 				4FD9FEF51F28CF2D000B5B07 /* Assets.xcassets in Resources */,
 				4FD9FEF31F28CF2D000B5B07 /* Main.storyboard in Resources */,
@@ -290,11 +272,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FF423751F3228F800097714 /* UIImageView+ImageCache.m in Sources */,
 				4FD9FEF01F28CF2D000B5B07 /* RssViewController.swift in Sources */,
 				4FBC9D4B1F2F5B7E0066B6D6 /* RssReader.swift in Sources */,
+				4F17A7771F40DA8D000CE404 /* ImageCache.swift in Sources */,
+				4F1405B21F3DF1E500BA6AEC /* AddBookmarkViewController.swift in Sources */,
 				4FD9FEEE1F28CF2D000B5B07 /* AppDelegate.swift in Sources */,
-				4FF423741F32286800097714 /* ImageCache.m in Sources */,
 				4FD9FF1C1F28DBF9000B5B07 /* Rss.swift in Sources */,
 				4F8EB8571F374A3100F02C81 /* BookmarkViewController.swift in Sources */,
 			);
@@ -468,7 +450,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = info.iwaki.RssReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RssReader/RssReader-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -485,7 +466,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = info.iwaki.RssReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RssReader/RssReader-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

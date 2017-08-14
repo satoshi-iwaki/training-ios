@@ -8,9 +8,10 @@
 
 import UIKit
 
-struct RssFeedAuthor: Codable {
+struct RssFeedResultGenre: Codable {
+    let genreId: String
     let name: String
-    let uri: URL
+    let url: URL
 }
 
 struct RssFeedResult: Codable {
@@ -18,18 +19,18 @@ struct RssFeedResult: Codable {
     let artistName: String
     let artistUrl: URL
     let artworkUrl100: URL
-    let contentAdvisoryRating: String
     let copyright: String
-    let genreNames: [String]
+    let genres: [RssFeedResultGenre]
     let id: String
     let kind: String
     let name: String
-    let primaryGenreName: String
-    let releaseDate: Date
-    let trackCensoredName: String
-    let trackExplicitness: String
+    let releaseDate: String
     let url: URL
-    let version: String
+}
+
+struct RssFeedAuthor: Codable {
+    let name: String
+    let uri: URL
 }
 
 struct RssFeed: Codable {
@@ -40,7 +41,7 @@ struct RssFeed: Codable {
     let copyright: String
     let country: String
     let icon: URL
-    let updated: String
+    let updated: Date
     let results: [RssFeedResult]
 }
 
@@ -59,4 +60,3 @@ struct Bookmark: Codable {
         self.rss = nil
     }
 }
-

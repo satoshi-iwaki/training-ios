@@ -8,8 +8,8 @@
 
 import UIKit
  
-class BookmarkViewController: UITableViewController {
-    var bookmarks: [Bookmark] = []
+class BookmarkViewController: UITableViewController, AddBookmarkViewControllerDelegate {
+    private var bookmarks: [Bookmark] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ class BookmarkViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        let addButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: Selector(("tappedAddButtonItem:")))
+        let addButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(BookmarkViewController.tappedAddButtonItem(sender:)))
         self.navigationItem.rightBarButtonItem = addButtonItem
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.title = "RSS Bookmarks"
@@ -26,11 +26,11 @@ class BookmarkViewController: UITableViewController {
         restoreBookmarks()
         if self.bookmarks.count == 0 {
             self.bookmarks.append(Bookmark(title: "Apple Music - Top Albums 100",
-                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit/json")!))
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit.json")!))
             self.bookmarks.append(Bookmark(title: "iTunes Music - Top Albums 100",
-                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/100/explicit/json")!))
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/100/explicit.json")!))
             self.bookmarks.append(Bookmark(title: "iOS App - New Apps We Love Top 100",
-                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/100/explicit/json")!))
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/100/explicit.json")!))
         }
         storeBookmarks()
     }
@@ -51,10 +51,12 @@ class BookmarkViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
 
         // Configure the cell...
         guard indexPath.row < bookmarks.count else {
+            cell.textLabel?.text = "No item"
+            cell.accessoryType = .none
             return cell
         }
         let bookmark = bookmarks[indexPath.row]
@@ -92,10 +94,18 @@ class BookmarkViewController: UITableViewController {
 
     // Override to support conditional rearranging of the table view.
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
         return true
     }
 
+    // MARK: - Table view delegate
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row < bookmarks.count else {
+            return
+        }
+        self.performSegue(withIdentifier: "showRssViewController", sender: self)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -107,22 +117,34 @@ class BookmarkViewController: UITableViewController {
                 return;
             }
             let bookmark = self.bookmarks[indexPath.row]
-            let rssViewController = segue.destination as! RssViewController
-            rssViewController.url = bookmark.url
+            let viewController = segue.destination as! RssViewController
+            viewController.url = bookmark.url
+        } else if segue.identifier == "showAddBookmarkViewController" {
+            let naviController = segue.destination as! UINavigationController
+            let viewController = naviController.topViewController as! AddBookmarkViewController
+            viewController.delegate = self
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.row < bookmarks.count else {
-            return
-        }
-        self.performSegue(withIdentifier: "showRssViewController", sender: self)
+    // MARK: - AddBookmarkViewControllerDelegate
+    
+    func didEditBookmark(_ sender: AddBookmarkViewController, bookmark: Bookmark) {
+        self.bookmarks.append(bookmark)
+        self.storeBookmarks()
+        self.tableView.reloadData()
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func tappedAddButtonItem(sender: UIBarButtonItem) {
-        
+    func didCancel(_ sender: AddBookmarkViewController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    @objc func tappedAddButtonItem(sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "showAddBookmarkViewController", sender: self)
     }
     
+    // MARK: - Private methods
+
     func storeBookmarks() {
         guard let data = try? JSONEncoder().encode(self.bookmarks) else {
             return
