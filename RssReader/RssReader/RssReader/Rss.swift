@@ -19,7 +19,7 @@ struct RssFeedResult: Codable {
     let artistName: String
     let artistUrl: URL
     let artworkUrl100: URL
-    let copyright: String
+    let copyright: String?  // optional
     let genres: [RssFeedResultGenre]
     let id: String
     let kind: String
