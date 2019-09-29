@@ -25,12 +25,12 @@ class BookmarkViewController: UITableViewController, AddBookmarkViewControllerDe
         
         restoreBookmarks()
         if self.bookmarks.count == 0 {
+            self.bookmarks.append(Bookmark(title: "Apple Music - New Release Top 100",
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-releases/all/100/explicit.json")!))
             self.bookmarks.append(Bookmark(title: "Apple Music - Top Albums 100",
-                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/new-music/100/explicit.json")!))
-            self.bookmarks.append(Bookmark(title: "iTunes Music - Top Albums 100",
-                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/100/explicit.json")!))
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/apple-music/top-albums/all/100/explicit.json")!))
             self.bookmarks.append(Bookmark(title: "iOS App - New Apps We Love Top 100",
-                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/100/explicit.json")!))
+                                         url: URL(string: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-apps-we-love/all/100/explicit.json")!))
         }
         storeBookmarks()
     }
@@ -66,17 +66,9 @@ class BookmarkViewController: UITableViewController, AddBookmarkViewControllerDe
 
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+    
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             bookmarks.remove(at: indexPath.row)
@@ -162,5 +154,4 @@ class BookmarkViewController: UITableViewController, AddBookmarkViewControllerDe
         }
         self.bookmarks = bookmarks
     }
-
 }

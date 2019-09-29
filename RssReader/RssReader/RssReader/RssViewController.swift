@@ -83,7 +83,7 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
         
         let result = rss.feed.results[indexPath.row]
         if UIApplication.shared.canOpenURL(result.url) {
-            UIApplication.shared.open(result.url, options: [:], completionHandler: nil)
+            UIApplication.shared.open(result.url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         }
     }
     
@@ -121,3 +121,8 @@ class RssViewController: UIViewController, UITableViewDataSource, UITableViewDel
 }
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
+}

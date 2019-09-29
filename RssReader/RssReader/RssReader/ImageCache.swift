@@ -40,7 +40,6 @@ class ImageCache: NSObject, NSCacheDelegate {
         queue.addOperation {
             if let image = self.cachedImage(url: url) {
                 DispatchQueue.main.async {
-                    print("*** Cached Image = %@", url)
                     completionHandler(image)
                 }
                 return
@@ -50,25 +49,25 @@ class ImageCache: NSObject, NSCacheDelegate {
                 let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 60.0)
                 self.session.dataTask(with: request) { (data, response, error) in
                     if let error = error {
-                        print("error = \(error)");
+                        debugPrint("error = \(error)");
                         completionHandler(nil)
                         semaphore.signal()
                         return
                     }
                     guard let httpResponse = response as? HTTPURLResponse, let data = data else {
-                        print("HTTP response is nil or data is nil")
+                        debugPrint("HTTP response is nil or data is nil")
                         completionHandler(nil)
                         semaphore.signal()
                         return
                     }
                     guard httpResponse.statusCode == 200 else {
-                        print("HTTP response code is not 200")
+                        debugPrint("HTTP response code is not 200")
                         completionHandler(nil)
                         semaphore.signal()
                         return
                     }
                     guard let image = UIImage(data: data) else {
-                        print("HTTP response data is not image")
+                        debugPrint("HTTP response data is not image")
                         completionHandler(nil)
                         semaphore.signal()
                         return
@@ -77,10 +76,8 @@ class ImageCache: NSObject, NSCacheDelegate {
                     completionHandler(image)
                     semaphore.signal()
                 }.resume()
-                print(">>> Start Download Image = %@", url)
             }
             semaphore.wait()
-            print("<<< End   Download Image = %@", url)
         }
     }
     

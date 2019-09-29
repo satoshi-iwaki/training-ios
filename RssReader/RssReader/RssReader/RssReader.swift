@@ -25,17 +25,17 @@ class RssReader: NSObject, URLSessionDelegate {
     func load(url: URL) {
         let task = session.dataTask(with: url) { (data, response, error) in
             if let error = error {
-                print("error = \(error)");
+                debugPrint("error = \(error)");
                 self.delegate?.didFinishLoading(rssReader: self, rss: nil, error: error)
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse, let data = data else {
-                print("HTTP response is nil or data is nil")
+                debugPrint("HTTP response is nil or data is nil")
                 self.delegate?.didFinishLoading(rssReader: self, rss: nil, error: error)
                 return
             }
             guard httpResponse.statusCode == 200 else {
-                print("HTTP response code is not 200")
+                debugPrint("HTTP response code is not 200")
                 self.delegate?.didFinishLoading(rssReader: self, rss: nil, error: error)
                 return
             }
@@ -63,10 +63,10 @@ class RssReader: NSObject, URLSessionDelegate {
 
         do {
             let rss = try decoder.decode(Rss.self, from: data)
-            print(rss)
+            debugPrint(rss)
             return rss
         } catch {
-            print(error)
+            debugPrint(error)
             throw(error)
         }
     }
