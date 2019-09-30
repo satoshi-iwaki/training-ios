@@ -59,7 +59,10 @@ class ViewController: UIViewController, CalculatorDelegate {
     @IBAction func number9ButtonClicked(_ sender: Any) {
         calculator.inputDigit(by: "9")
     }
-    
+    @IBAction func pointButtonClicked(_ sender: Any) {
+        calculator.inputDigit(by: ".")
+    }
+
     @IBAction func operatorAddingButtonClicked(_ sender: Any) {
         calculator.inputOperator(.adding)
     }
