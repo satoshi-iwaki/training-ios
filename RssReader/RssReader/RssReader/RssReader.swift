@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol RssReaderDelegate : class {
+protocol RssReaderDelegate : AnyObject {
     func didFinishLoading(rssReader: RssReader, rss: Rss?, error: Error?) -> Void
 }
 
@@ -57,7 +57,9 @@ class RssReader: NSObject, URLSessionDelegate {
     
     func decode(data: Data) throws -> Rss {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"   // "2017-08-12T01:30:53.000-07:00"
+        formatter.dateFormat = "EEE',' dd MMM yyyy HH:mm:ss z"   // "Wed, 27 Jul 2022 14:38:12 +0000"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US")
         let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(formatter)
 

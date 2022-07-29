@@ -15,9 +15,9 @@ struct RssFeedResultGenre: Codable {
 }
 
 struct RssFeedResult: Codable {
-    let artistId: String
+    let artistId: String?  // optional
     let artistName: String
-    let artistUrl: URL
+    let artistUrl: URL?  // optional
     let artworkUrl100: URL
     let copyright: String?  // optional
     let genres: [RssFeedResultGenre]
@@ -30,7 +30,7 @@ struct RssFeedResult: Codable {
 
 struct RssFeedAuthor: Codable {
     let name: String
-    let uri: URL
+    let url: URL
 }
 
 struct RssFeed: Codable {
