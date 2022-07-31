@@ -25,11 +25,11 @@ class BookmarkViewController: UITableViewController, AddBookmarkViewControllerDe
         
         restoreBookmarks()
         if self.bookmarks.count == 0 {
-            self.bookmarks.append(Bookmark(title: "Music - Top Albums Top 100",
+            self.bookmarks.append(Bookmark(title: "Music - Top Albums",
                                          url: URL(string: "https://rss.applemarketingtools.com/api/v2/us/music/most-played/100/albums.json")!))
-            self.bookmarks.append(Bookmark(title: "Apps - Top Free Top 100",
+            self.bookmarks.append(Bookmark(title: "Apps - Top Free",
                                          url: URL(string: "https://rss.applemarketingtools.com/api/v2/us/apps/top-free/100/apps.json")!))
-            self.bookmarks.append(Bookmark(title: "Apps - Top Paid Top 100",
+            self.bookmarks.append(Bookmark(title: "Apps - Top Paid",
                                          url: URL(string: "https://rss.applemarketingtools.com/api/v2/us/apps/top-paid/100/apps.json")!))
         }
         storeBookmarks()

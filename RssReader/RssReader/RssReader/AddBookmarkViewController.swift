@@ -20,21 +20,22 @@ class AddBookmarkViewController: UITableViewController {
     struct AppleFeed {
         let title: String
         let path: String
+        let file: String
         var count: Int
     }
     
     private let appleFeeds: [AppleFeed] = [
-        AppleFeed(title: "Apple Music - Top Albums",
-                  path: "apple-music/new-music",
+        AppleFeed(title: "Music - Top Albums",
+                  path: "music/most-played",
+                  file: "albums.json",
                   count:100),
-        AppleFeed(title: "iTunes Music - Top Albums",
-                  path: "itunes-music/top-albums",
+        AppleFeed(title: "Apps - Top Free",
+                  path: "apps/top-free",
+                  file: "apps.json",
                   count:10),
-        AppleFeed(title: "iOS Apps - New Apps We Love",
-                  path: "ios-apps/new-apps-we-love",
-                  count:10),
-        AppleFeed(title: "macOS Apps - Top Mac Apps",
-                  path: "macos-apps/top-mac-apps",
+        AppleFeed(title: "Apps - Top Paid",
+                  path: "apps/top-paid",
+                  file: "apps.json",
                   count:10)
     ]
     
@@ -152,8 +153,8 @@ class AddBookmarkViewController: UITableViewController {
         }
         if let country = Locale.current.regionCode {
             let appleFeed = appleFeeds[indexPath.row]
-            var urlComponents = URLComponents(string: "https://rss.itunes.apple.com/")!
-            urlComponents.path = String(format: "/api/v1/%@/%@/%d/explicit.json", country.lowercased(), appleFeed.path, appleFeed.count)
+            var urlComponents = URLComponents(string: "https://rss.applemarketingtools.com/")!
+            urlComponents.path = String(format: "/api/v2/%@/%@/%d/%@", country.lowercased(), appleFeed.path, appleFeed.count, appleFeed.file)
             let bookmark = Bookmark(title: String(format: "%@ %d", appleFeed.title, appleFeed.count),
                                     url: urlComponents.url!)
             delegate.didEditBookmark(self, bookmark: bookmark)
