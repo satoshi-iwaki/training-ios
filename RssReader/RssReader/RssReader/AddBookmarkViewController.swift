@@ -22,6 +22,14 @@ class AddBookmarkViewController: UITableViewController {
         let path: String
         let file: String
         var count: Int
+        
+        func bookmark() -> Bookmark {
+            let country = Locale.current.regionCode ?? "us"
+            var urlComponents = URLComponents(string: "https://rss.applemarketingtools.com/")!
+            urlComponents.path = String(format: "/api/v2/%@/%@/%d/%@", country.lowercased(), path, count, file)
+            return Bookmark(title: String(format: "%@ %d", title, count),
+                                    url: urlComponents.url!)
+        }
     }
     
     private let appleFeeds: [AppleFeed] = [
@@ -151,15 +159,11 @@ class AddBookmarkViewController: UITableViewController {
         guard let indexPath = self.selectedIndexPath else {
             return
         }
-        if let country = Locale.current.regionCode {
-            let appleFeed = appleFeeds[indexPath.row]
-            var urlComponents = URLComponents(string: "https://rss.applemarketingtools.com/")!
-            urlComponents.path = String(format: "/api/v2/%@/%@/%d/%@", country.lowercased(), appleFeed.path, appleFeed.count, appleFeed.file)
-            let bookmark = Bookmark(title: String(format: "%@ %d", appleFeed.title, appleFeed.count),
-                                    url: urlComponents.url!)
-            delegate.didEditBookmark(self, bookmark: bookmark)
-        }
+        let appleFeed = appleFeeds[indexPath.row]
+        let bookmark = appleFeed.bookmark()
+        delegate.didEditBookmark(self, bookmark: bookmark)
     }
+
     @objc func tappedCancelButtonItem(sender: UIBarButtonItem) {
         guard let delegate = self.delegate else {
             return
